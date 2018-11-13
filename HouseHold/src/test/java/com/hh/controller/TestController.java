@@ -32,6 +32,7 @@ public class TestController {
 	public void testMethod() {
 		String result = session.selectOne("DD_DAY01.iqryTest");
 		gLog(result);
+		gLog(result);
 	}
 	
 	private void gLog(String txt) {
