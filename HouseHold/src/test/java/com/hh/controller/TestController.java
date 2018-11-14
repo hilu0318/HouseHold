@@ -3,7 +3,9 @@ package com.hh.controller;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -30,9 +32,18 @@ public class TestController {
 	
 	@Test
 	public void testMethod() {
-		String result = session.selectOne("DD_DAY01.iqryTest");
+		/*
+		Map<String, Object> inParam = new HashMap();
+		inParam.put("amt", 4000);
+		inParam.put("title", "TEST01");
+		inParam.put("memo", "TEST-memo01");
+		int result = session.insert("DD_DAY01.rgstDailyBasic", inParam);
 		gLog(result);
-		gLog(result);
+		*/
+		List<Map<String, Object>> oList = session.selectList("DD_DAY01.iqryLstDaily");
+		for(Map<String, Object> map : oList) {
+			gLog(map.toString());
+		}
 	}
 	
 	private void gLog(String txt) {

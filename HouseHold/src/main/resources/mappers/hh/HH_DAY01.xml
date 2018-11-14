@@ -4,14 +4,55 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="DD_DAY01">
-	<select id="iqryDaily" resultType="hash">
-	SELECT * 
-	  FROM HH_DAY01	/* 가계부_일별내역 */
-	</select>
-	
 	<select id="iqryTest" resultType="String">
 	SELECT 'Y'
 	  FROM DUAL
 	</select>
+	
+	<select id="iqryDaily" resultType="hash">
+	SELECT RGST_DT
+		 , SEQNO
+		 , AMT
+		 , TITLE
+		 , MEMO
+		 , FIRST_RGST_DTTM
+		 , LAST_PROC_DTTM
+	  FROM HH_DAY01			/* 가계부_일별내역 */
+	 WHERE RGST_DT 	= ${rgst_dt}
+	   AND SEQNO 	= ${seqno}
+	</select>
+	
+	<select id="iqryLstDaily" resultType="hash">
+	SELECT RGST_DT
+		 , SEQNO
+		 , AMT
+		 , TITLE
+		 , MEMO
+		 , FIRST_RGST_DTTM
+		 , LAST_PROC_DTTM
+	  FROM HH_DAY01			/* 가계부_일별내역 */
+	</select>
+	
+	<insert id="rgstDailyBasic" parameterType="hash">
+	INSERT 
+	  INTO HH_DAY01
+	      ( RGST_DT
+	      , SEQNO
+	      , AMT
+	      , TITLE
+	      , MEMO
+	      , FIRST_RGST_DTTM
+	      , LAST_PROC_DTTM
+	      )
+	VALUES 
+	      ( TO_CHAR(SYSDATE, 'YYYYMMDD')
+	      , (SELECT NVL(MAX(SEQNO), 0) + 1 FROM HH_DAY01 WHERE RGST_DT = TO_CHAR(SYSDATE, 'YYYYMMDD'))
+	      , ${amt}
+	      , NVL('${title}', '')
+	      , NVL('${memo}', '')
+	      , TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+	      , TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+	      )
+	</insert>
 		
 </mapper>
