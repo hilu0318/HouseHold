@@ -9,7 +9,7 @@
 	  FROM DUAL
 	</select>
 	
-	<select id="iqryDaily" resultType="hash">
+	<select id="iqryDailyHistory" resultType="hash">
 	SELECT RGST_DT
 		 , SEQNO
 		 , AMT
@@ -18,7 +18,7 @@
 		 , FIRST_RGST_DTTM
 		 , LAST_PROC_DTTM
 	  FROM HH_DAY01			/* 가계부_일별내역 */
-	 WHERE RGST_DT 	= ${rgst_dt}
+	 WHERE RGST_DT 	= '${rgst_dt}'
 	   AND SEQNO 	= ${seqno}
 	</select>
 	
@@ -31,6 +31,7 @@
 		 , FIRST_RGST_DTTM
 		 , LAST_PROC_DTTM
 	  FROM HH_DAY01			/* 가계부_일별내역 */
+	 WHERE RGST_DT BETWEEN ${iqry_stdt} AND ${iqry_endt}
 	</select>
 	
 	<insert id="rgstDailyBasic" parameterType="hash">
