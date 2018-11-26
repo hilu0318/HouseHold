@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0/EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CRD_CRD01">
+	<insert id="rgstCrdBasic">
+		INSERT 
+		  INTO CRD_CRD01
+		  	 ( CARD_ID			/* 카드ID */
+		  	 , CARD_CMPN_CD		/* 카드사코드 */
+		  	 , CARD_NUM			/* 카드번호 */
+		  	 , CARD_CVC_NUM		/* 카드CVC번호 */
+		  	 , CARD_HDR_NM		/* 카드소유자명 */
+		  	 , PAY_DD			/* 결재일 */
+		  	 , CAL_DD			/* 정산일 */
+		  	 , CARD_TYCD		/* 카드유형코드 */
+		  	 , VALID_YM			/* 유효년월 */
+		  	 , ACC_ID			/* 계좌ID - NULL */
+		  	 , ISS_DT			/* 발급일자 - NULL */
+		  	 , USER_ID			/* 사용자ID */
+		  	 , RGST_DTTM		/* 등록일시 */
+		  	 , USE_YN			/* 사용여부 */
+		  	 , FRST_RGST_DTTM	/* 최초등록일시 */
+		  	 , LAST_PROC_DTTM	/* 최종처리일시 */
+		  	 )
+		VALUES
+			 ( (SELECT 'C'||TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')||NVL(LPAD(TO_NUMBER(SUBSTR(MAX(CARD_ID), 16, 5)) + 1, 0, 5), '00001') 
+			 	  FROM CRD_CRD01 
+			 	 WHERE RGST_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'))
+			 , ${card_cmpn_cd}
+			 , ${card_num}
+			 , ${card_cvc_num}
+			 , ${card_hdr_nm}
+			 , ${pay_dd}
+			 , ${cal_dd}
+			 , ${card_tycd}
+			 , ${valid_ym}
+			 , ${acc_id}
+			 , ${iss_dt}
+			 , ${user_id}
+			 , ${frst_rgst_dttm}
+			 , ${last_proc_dttm}
+			 )  	 
+	</insert>
+</mapper>
