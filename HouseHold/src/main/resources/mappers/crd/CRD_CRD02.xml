@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0/EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CRD_CRD02">
+	<select id="iqryCardExpHistoryBasic">
+	SELECT CRD_PAY_SEQNO	/* 카드결제일련번호 */
+		 , CARD_ID 			/* 카드ID */
+		 , INST_YN 			/* 할부여부 */
+		 , INST_MM			/* 할부개월 */
+		 , INST_TRN			/* 할부회차 */
+		 , PAY_AMT			/* 결제금액 */
+		 , PAY_DT			/* 결재일자 */
+		 , PAY_TM			/* 결재시간 */
+		 , RGST_DTTM		/* 등록일시 */
+		 , DEL_YN			/* 삭제여부 */
+	  FROM CRD_CRD02
+	 WHERE CRD_PAY_SEQNO = #{crd_pay_seqno} /* 카드결제일련번호 */
+	</select>
+	
+	<insert id="rgstCardExpHistoryBasic">
+	INSERT 
+	  INTO CRD_CRD02
+	     ( CRD_PAY_SEQNO
+	 	 , CARD_ID
+	 	 , INST_YN
+	 	 , INST_MM
+	 	 , INST_TRN
+	 	 , PAY_AMT
+	 	 , PAY_DT
+	 	 , PAY_TM
+	 	 , RGST_DTTM
+	 	 , DEL_YN
+	 	 , FRST_RGST_DTTM
+	 	 , LAST_PROC_DTTM
+	     )
+	VALUES
+		 ( (SELECT #{rgst_dttm}||LPAD(TO_NUMBER(NVL(SUBSTR(MAX(CRD_PAY_SEQNO), 15, 6), 0)) + 1, 0, 6) FROM CRD_CRD02 WHERE RGST_DTTM = #{rgst_dttm})
+		 , #{card_id}
+		 , #{inst_yn}
+		 , #{inst_mm}
+		 , #{inst_trn}
+		 , #{pay_amt}
+		 , #{pay_dt}
+		 , #{pay_tm}
+		 , #{rgst_dttm}
+		 , #{del_yn}
+		 , #{frst_rgst_dttm}
+		 , #{last_proc_dttm}
+		 )
+	</insert>
+	
+	<update id="updtCardExpHistoryBasic">
+	UPDATE CRD_CRD02
+	   SET LAST_PROC_DTTM = #{last_proc_dttm} /* 최종처리일시 */
+		 <if test="crd_pay_seqno != null">, CRD_PAY_SEQNO = #{crd_pay_seqno} /* 카드결제일련번호 */	</if>
+		 <if test="card_id 		 != null">, CARD_ID 	  = #{card_id} 		 /* 카드ID */			</if>
+		 <if test="inst_yn 		 != null">, INST_YN 	  = #{inst_yn} 		 /* 할부여부 */		</if>
+		 <if test="inst_mm 		 != null">, INST_MM 	  = #{inst_mm} 		 /* 할부개월 */		</if>
+		 <if test="inst_trn 	 != null">, INST_TRN 	  = #{inst_trn} 	 /* 할부회차 */		</if>
+		 <if test="pay_amt 		 != null">, PAY_AMT 	  = #{pay_amt} 		 /* 결제금액 */		</if>
+		 <if test="pay_dt 		 != null">, PAY_DT 		  = #{pay_dt} 		 /* 결재일자 */		</if>
+		 <if test="pay_tm 		 != null">, PAY_TM 		  = #{pay_tm} 		 /* 결재시간 */		</if>
+		 <if test="rgst_dttm 	 != null">, RGST_DTTM 	  = #{rgst_dttm} 	 /* 등록일시 */		</if>
+		 <if test="del_yn 		 != null">, DEL_YN 		  = #{del_yn} 		 /* 삭제여부 */		</if>
+	 WHERE CRD_PAY_SEQNO = #{crd_pay_seqno} /* 카드결제일련번호 */
+	</update>
+	
+	<update id="updtDelYnCardExpHistory">
+	UPDATE CRD_CRD02
+	   SET LAST_PROC_DTTM 	= #{last_proc_dttm} 	/* 최종처리일시 */
+		 , DEL_YN 		  	= #{del_yn} 		 	/* 삭제여부 */
+	 WHERE CRD_PAY_SEQNO 	= #{crd_pay_seqno} 		/* 카드결제일련번호 */
+	</update>
+</mapper>

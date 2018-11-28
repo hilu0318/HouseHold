@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0/EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CM_CMCD_DTL">
+	<select id="iqryCmcdDtlBasic" parameterType="CmmCdDtlDTO" resultType="hash">
+	SELECT CMCD_NM_CD 		/* 공통코드 */
+		 , CMCD_VAL_CD 		/* 공통코드값 */
+		 , CMCD_NM_CMT 		/* 공통코드명 */
+		 , CMCD_VAL_CMT 	/* 공통코드값명 */
+		 , CMCD_VAL_IND 	/* 공통코드값순서 */
+		 , CMCD_VAL_SIZE 	/* 공통코드값길이 */
+		 , PARN_CMCD_NM_CD 	/* 부모공통코드 */
+		 , PARN_CMCD_VAL_CD /* 부모공통코드값 */
+	  FROM CM_CMCD_DTL
+	 WHERE CMCD_NM_CD 	= #{cmcd_nm_cd} 	/* 공통코드 */
+	   AND CMCD_VAL_CD 	= #{cmcd_val_cd} 	/* 공통코드값 */
+	</select>
+	
+	<select id="iqryListCmcdDtl" parameterType="CmmCdDtlDTO" resultType="hash">
+	SELECT CMCD_VAL_CD 		/* 공통코드값 */
+		 , CMCD_VAL_CMT 	/* 공통코드값명 */
+	  FROM CM_CMCD_DTL
+	 WHERE 1=1
+	   AND CMCD_NM_CD 	= #{cmcd_nm_cd} 	/* 공통코드 */
+	</select>
+	
+</mapper>
