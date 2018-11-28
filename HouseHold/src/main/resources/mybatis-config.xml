@@ -5,6 +5,8 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="java.util.HashMap" alias="hash"/>
-		<package name="com.hh.domain"/>
+		<package name="com.hh.domain.cardBasic"/>
+		<package name="com.hh.domain.cmmCdDtl"/>
+		<package name="com.hh.domain.dailyhistory"/>
 	</typeAliases>
 </configuration>
